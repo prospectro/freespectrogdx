@@ -36,11 +36,11 @@ object HighPriest {
     I18n("highpriest.Ouroboros.description"),
     effects = effects(OnTurn -> ouro))
 
-  val serpent = new Creature("serpent of eternity", Attack(2), 8,
-    "At the end of opponent's turn serpent dies and heals X hp to owner and Ouroboros (X = its remaining hp).")
+  val serpent = new Creature("highpriest.serpent", Attack(2), 8,
+    I18n("highpriest.serpent.description"))
 
-  val sunStone = new Creature("sun stone", Attack(0), 22,
-    "increases damage from owner spells by 2 and increases Ra's attack by 1 every turn",
+  val sunStone = new Creature("highpriest.sunstone", Attack(0), 22,
+    I18n("highpriest.sunstone.description"),
     mod = Some(new SpellMod(x ⇒ x + 2)),
     effects = effects(OnTurn -> incrRaAttack))
 
@@ -86,8 +86,8 @@ object HighPriest {
     new Creature("highpriest.Sacredscarab", Attack(3), 11,
       I18n("highpriest.Sacredscarab.description"),
       reaction = new ScarabReaction),
-    new Creature("highpriest.Sunpriest", Attack(2), 16, 
-	  I18n("highpriest.Sunpriest.description"),
+    new Creature("highpriest.sunpriest", Attack(2), 16, 
+	  I18n("highpriest.sunpriest.description"),
       runAttack = new SunPriestAttack),
     apis,
     new Creature("highpriest.Bennu", Attack(5), 21, 
