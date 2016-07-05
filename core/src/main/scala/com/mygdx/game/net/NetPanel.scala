@@ -1,10 +1,13 @@
 package com.mygdx.game.net
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener
 import com.badlogic.gdx.scenes.scene2d.ui.{List => UiList, _}
 import com.mygdx.game._
+import com.mygdx.game.effects.SoundEntity
 import com.mygdx.game.gui._
 import priv.util.GuiUtils._
+import priv.sp.I18n
 
 class NetPanel(
   screens : Screens, buttons : ButtonPanel) {
@@ -12,7 +15,7 @@ class NetPanel(
   import screens._
   import screenResources.{skin2 => skin}
 
-  val name = new TextField(System.getProperty("user.name"), skin)
+  val name = new TextField(screens.storage.userName getOrElse System.getProperty("user.name"), skin)
   val host = new TextField("172.99.78.51", skin)
   val port = new TextField("12345", skin)
   val logs = new TextArea("", skin)
@@ -38,7 +41,7 @@ class NetPanel(
   val panel = table
   table.pad(5).bottom().pack()
 
-  buttons.ConnectButton addListener onClick {
+  buttons.getButton(I18n("button.connect")) addListener onClick {
     screenResources.clientOption foreach { client => client.release()  }
     try {
       val client = new NetClient(
@@ -46,6 +49,7 @@ class NetPanel(
         screens,
         logText, logDuelRequest, setPlayerList)
       screenResources.clientOption = Some(client)
+      screenResources.storage persist Map(Storage.USER_NAME -> client.user)
       logText("Connected")
     } catch { case e : Exception =>
       logText(e.getMessage)
@@ -78,19 +82,28 @@ class NetPanel(
     }
   }
 
-
   def setPlayerList(players : List[PlayerInfo]) = {
     playerList.setItems(players : _*)
   }
 
   def logText(s : String) = {
     logs.appendText(s + "\n")
+    playSound("sounds/chat.mp3")
   }
 
   def logDuelRequest(id : String) = {
     playerList.getItems.toArray().find(_.id == id) match {
       case None => logText("duel request from unknown id " + id)
       case Some(p) => logText(p.name + " invite you to a duel")
+    }
+    playSound("sounds/duel-request.mp3")
+  }
+
+  def isInLobby() = screens.game.getScreen.isInstanceOf[LobbyScreen]
+  def playSound(name : String) = {
+    if (isInLobby()) {
+      val sound = Gdx.audio.newSound(Gdx.files.internal(name))
+      screenResources.engine addEntity SoundEntity(sound, 3, screenResources)
     }
   }
 }

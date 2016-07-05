@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.{List => _, _}
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
-import com.mygdx.game.ScreenResources
+import com.mygdx.game.{ScreenResources, Storage}
 import priv.sp._
 import priv.util.GuiUtils._
 
@@ -61,6 +61,7 @@ class GameSettings(resources : GameResources, screenResources : ScreenResources)
     def updateResources() : Unit = {
       val selecteds = choiceCheckBoxes.collect { case (choice, checkbox) if checkbox.isChecked => choice }.toSet
       resources.playerChoices = resources.playerChoices.updated(id, specials.filter(x ⇒ selecteds.contains(x.label)))
+      screenResources.storage persist Map(Storage.CLASS_CHOICE(id) -> resources.playerChoices(id).map(_.name).mkString(","))
     }
 
     def select(houses: List[House]) : Unit = {

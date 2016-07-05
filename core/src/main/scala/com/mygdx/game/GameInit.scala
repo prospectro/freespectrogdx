@@ -21,7 +21,7 @@ class GameInit(val screenResources : ScreenResources,
                val gameResources : GameResources,
                val server : GameServer) {
 
-  val session          = new GameSession(server, gameResources)
+  val session          = new GameSession(server, gameResources, screenResources.storage.userName getOrElse "me")
   val descriptionPanel = new DescriptionPanel(screenResources)
   val historyPanel     = new DescriptionPanel(screenResources, Color.GRAY)
   val userMenu         = new ButtonPanel(screenResources.skin)
@@ -48,7 +48,7 @@ class GameInit(val screenResources : ScreenResources,
   cardPanels foreach (_.init(commandRecorder))
   background setBackground session.state.players(session.server.startingPlayer).desc.get.houses(4).house
 
-  userMenu.skipButton addListener onClick {
+  userMenu.getButton(I18n("button.skip")) addListener onClick {
     println("skip")
     if (session.updater.ended.isEmpty && commandRecorder.cont.isDefined) {
       commandRecorder.skip()
