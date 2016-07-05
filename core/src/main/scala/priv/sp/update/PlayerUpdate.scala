@@ -273,6 +273,15 @@ class PlayerUpdate(val id: PlayerId, val updater: GameStateUpdater) extends Fiel
         })
       updateElementals()
     }
+	
+    def decrMana(amount: Int, houseIndexes: Int*) = {
+      write(
+        (houseIndexes foldLeft houses) { (acc, id) ⇒
+          val house = acc(id)
+          acc.updated(id, redMana((house, amount)))
+        })
+      updateElementals()
+    }	
 
     def incrGrowth(amount: Int, houseIndexes: Int*) = {
       write(
@@ -285,6 +294,10 @@ class PlayerUpdate(val id: PlayerId, val updater: GameStateUpdater) extends Fiel
     var addMana : Function[(HouseState, Int), HouseState] = { case ((houseState, amount)) =>
       houseState.copy(mana = math.max(0, houseState.mana + amount))
     }
+	
+    var redMana : Function[(HouseState, Int), HouseState] = { case ((houseState, amount)) =>
+      houseState.copy(mana = math.max(0, houseState.mana - amount))
+    }	
 
     def addGrowth(houseState : HouseState, amount : Int) : HouseState = {
       houseState.copy(growth = math.max(0, houseState.growth + amount))
