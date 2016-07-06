@@ -88,7 +88,7 @@ object Entomologist extends ChangeTarget {
 
   class GiantReaction extends Reaction {
     override def selfProtect(d: Damage) = {
-	  if (!d.isEffect) {
+	  if (!d.isSpell) {
 		d.copy(amount = math.max(0, d.amount - 2))
 	  }
 	  else
