@@ -12,7 +12,7 @@ object Antimancer {
   I18n("antimancer.0.description"),
   effects = effects(OnTurn -> angryMobEffect))
 
-  val retaliator = new Creature("antimancer.4.name", Attack(5), 10,
+  val retaliator = new Creature("antimancer.4.name", Attack(5), 8,
     I18n("antimancer.4.description"),
     reaction = new RetaliatorReaction)
 
