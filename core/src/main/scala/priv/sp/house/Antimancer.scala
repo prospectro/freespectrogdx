@@ -40,7 +40,7 @@ object Antimancer {
       I18n("antimancer.6.description"),
       reaction = new HarvesterReaction),
 
-    new Creature("antimancer.7.name", Attack(8), 31,
+    new Creature("antimancer.7.name", Attack(7), 31,
       I18n("antimancer.7.description"),
       effects = effects(OnTurn -> voodoo)),
 

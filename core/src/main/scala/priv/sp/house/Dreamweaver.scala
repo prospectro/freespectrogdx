@@ -7,10 +7,10 @@ import GameCardEffect._
 
 class Dreamweaver {
 
-  val roc = new Creature("dreamweaver.roc", AttackSources(Some(6), Vector(RocAttackSource)), 17,
+  val roc = new Creature("dreamweaver.roc", AttackSources(Some(6), Vector(RocAttackSource)), 21,
     "dreamweaver.roc.description")
 
-  val castle = new Creature("dreamweaver.castle", Attack(2), 37,
+  val castle = new Creature("dreamweaver.castle", Attack(2), 30,
     I18n("dreamweaver.castle.description"),
     runAttack = MultiTargetAttack, reaction = new CastleReaction)
 
@@ -66,7 +66,7 @@ class Dreamweaver {
         s heal dp
       }
     }
-    player heal (nbCreatures * 3)
+    player heal (nbCreatures * 2)
   }
 
   def mare = { env: Env ⇒
